@@ -62,7 +62,9 @@ typedef enum {
 	SDMMC_SD_STOP,
 	SDMMC_NAND_START,
 	SDMMC_NAND_STOP,
-	DSI_RESET_SLOT_1
+	DSI_RESET_SLOT_1,
+	DSI_LOCK_SCFG_ARM7,	
+	DSI_SWITCH_TO_DS_MODE
 } FifoSdmmcDsiCommands;
 
 typedef enum {

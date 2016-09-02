@@ -127,6 +127,11 @@ void systemSleep(void);
 */
 void ledBlink(int bm);
 
+/*!	Reset the slot1
+	\note special dsi command that needs unlocked ARM7 SCFG
+*/
+u32 dsi_resetSlot1();
+
 extern bool __dsimode;
 
 //--------------------------------------------------------------
@@ -277,7 +282,6 @@ void powerOff(PM_Bits bits) {
 
 void readUserSettings();
 void systemShutDown();
-int dsi_resetSlot1();
 
 #endif /* ARM7 */
 

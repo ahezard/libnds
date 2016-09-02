@@ -121,3 +121,10 @@ u32 getBatteryLevel() {
 	return fifoGetValue32(FIFO_PM);
 }
 
+u32 dsi_resetSlot1() {
+	// send a command to ARM7 to reset the slot1
+	fifoSendValue32(FIFO_SDMMCDSI, DSI_RESET_SLOT_1);
+	while(!fifoCheckValue32(FIFO_SDMMCDSI)); //swiIntrWait(1,IRQ_FIFO_NOT_EMPTY);
+	return fifoGetValue32(FIFO_SDMMCDSI);
+}
+
