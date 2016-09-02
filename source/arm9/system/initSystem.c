@@ -85,7 +85,7 @@ void __attribute__((weak)) initSystem(void) {
 	fifoSetValue32Handler(FIFO_SYSTEM, systemValueHandler, 0);
 	fifoSetDatamsgHandler(FIFO_SYSTEM, systemMsgHandler, 0);
 
-	if(REG_DSIMODE) {
+	if(isTWLmode()) {
 		fifoSendValue32(FIFO_PM,PM_DSI_HACK);
 		__dsimode = true;
 	}

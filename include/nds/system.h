@@ -66,9 +66,26 @@ typedef enum
 /*!	This register controls what hardware should
 	be turned on or off.
 */
-#define	REG_POWERCNT	*(vu16*)0x4000304
+#define	REG_POWERCNT	(*(vu16*)0x4000304)
 
-#define REG_DSIMODE		*(vu32*)0x4004000
+#define	REG_ROMCTRL		(*(vu32*)0x40001A4)
+
+/* DSI mode registers */
+#define REG_SCFG_ROM	(*(vu32*)0x4004000)
+#define REG_SCFG_CLK	(*(vu32*)0x4004004)
+#define REG_SCFG_EXT	(*(vu32*)0x4004008)
+#define REG_SCFG_MC		(*(vu32*)0x4004010)
+
+static inline
+bool isTWLmode() {
+	return REG_SCFG_ROM&0x03 != 0x03 and REG_SCFG_ROM != 0x00;
+}
+
+static inline
+bool isSDAcessible() {
+	return  REG_SCFG_EXT&0x1000000 == 0x1000000;
+}
+
 static inline
 /*!
 	\brief sets the Y trigger(?)

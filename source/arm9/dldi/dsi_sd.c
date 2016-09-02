@@ -7,7 +7,7 @@
 //---------------------------------------------------------------------------------
 bool sdio_Startup() {
 //---------------------------------------------------------------------------------
-	if (!REG_DSIMODE) return false;
+	if (!isSDAcessible()) return false;
 
 	fifoSendValue32(FIFO_SDMMC,SDMMC_HAVE_SD);
 	while(!fifoCheckValue32(FIFO_SDMMC));
@@ -27,7 +27,7 @@ bool sdio_Startup() {
 //---------------------------------------------------------------------------------
 bool sdio_IsInserted() {
 //---------------------------------------------------------------------------------
-	if (!REG_DSIMODE) return false;
+	if (!isSDAcessible()) return false;
 
 	fifoSendValue32(FIFO_SDMMC,SDMMC_SD_IS_INSERTED);
 
@@ -41,7 +41,7 @@ bool sdio_IsInserted() {
 //---------------------------------------------------------------------------------
 bool sdio_ReadSectors(sec_t sector, sec_t numSectors,void* buffer) {
 //---------------------------------------------------------------------------------
-	if (!REG_DSIMODE) return false;
+	if (!isSDAcessible()) return false;
 	FifoMessage msg;
 
 	DC_FlushRange(buffer,numSectors * 512);
@@ -63,7 +63,7 @@ bool sdio_ReadSectors(sec_t sector, sec_t numSectors,void* buffer) {
 //---------------------------------------------------------------------------------
 bool sdio_WriteSectors(sec_t sector, sec_t numSectors,const void* buffer) {
 //---------------------------------------------------------------------------------
-	if (!REG_DSIMODE) return false;
+	if (!isSDAcessible()) return false;
 	FifoMessage msg;
 
 	DC_FlushRange(buffer,numSectors * 512);
@@ -86,14 +86,14 @@ bool sdio_WriteSectors(sec_t sector, sec_t numSectors,const void* buffer) {
 //---------------------------------------------------------------------------------
 bool sdio_ClearStatus() {
 //---------------------------------------------------------------------------------
-	if (!REG_DSIMODE) return false;
+	if (!isSDAcessible()) return false;
 	return true;
 }
 
 //---------------------------------------------------------------------------------
 bool sdio_Shutdown() {
 //---------------------------------------------------------------------------------
-	if (!REG_DSIMODE) return false;
+	if (!isSDAcessible()) return false;
 	return true;
 }
 

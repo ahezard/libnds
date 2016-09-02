@@ -9,7 +9,6 @@ static u16 piano_keys_old = 0;
 //------------------------------------------------------------------------------
 bool pianoIsInserted() {
 //------------------------------------------------------------------------------
-	if (REG_DSIMODE) return false;
 
 	sysSetCartOwner(BUS_OWNER_ARM9);
 

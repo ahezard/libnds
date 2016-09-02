@@ -15,7 +15,6 @@ static void guitarGripSetBus() {
 //------------------------------------------------------------------------------
 bool guitarGripIsInserted() {
 //------------------------------------------------------------------------------
-	if(REG_DSIMODE) return false;
 
 	guitarGripSetBus();
 

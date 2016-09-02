@@ -7,7 +7,7 @@
 //---------------------------------------------------------------------------------
 bool nand_Startup() {
 //---------------------------------------------------------------------------------
-	if (!REG_DSIMODE) return false;
+	if (!isSDAcessible()) return false;
 
 	return true;
 }
@@ -15,7 +15,7 @@ bool nand_Startup() {
 //---------------------------------------------------------------------------------
 bool nand_IsInserted() {
 //---------------------------------------------------------------------------------
-	if (!REG_DSIMODE) return false;
+	if (!isSDAcessible()) return false;
 
 	return true;
 }
@@ -23,7 +23,7 @@ bool nand_IsInserted() {
 //---------------------------------------------------------------------------------
 bool nand_ReadSectors(sec_t sector, sec_t numSectors,void* buffer) {
 //---------------------------------------------------------------------------------
-	if (!REG_DSIMODE) return false;
+	if (!isSDAcessible()) return false;
 	FifoMessage msg;
 
 	DC_FlushRange(buffer,numSectors * 512);
@@ -45,7 +45,7 @@ bool nand_ReadSectors(sec_t sector, sec_t numSectors,void* buffer) {
 //---------------------------------------------------------------------------------
 bool nand_WriteSectors(sec_t sector, sec_t numSectors,const void* buffer) {
 //---------------------------------------------------------------------------------
-	if (!REG_DSIMODE) return false;
+	if (!isSDAcessible()) return false;
 	FifoMessage msg;
 
 	DC_FlushRange(buffer,numSectors * 512);
@@ -68,14 +68,14 @@ bool nand_WriteSectors(sec_t sector, sec_t numSectors,const void* buffer) {
 //---------------------------------------------------------------------------------
 bool nand_ClearStatus() {
 //---------------------------------------------------------------------------------
-	if (!REG_DSIMODE) return false;
+	if (!isSDAcessible()) return false;
 	return true;
 }
 
 //---------------------------------------------------------------------------------
 bool nand_Shutdown() {
 //---------------------------------------------------------------------------------
-	if (!REG_DSIMODE) return false;
+	if (!isSDAcessible()) return false;
 	return true;
 }
 
