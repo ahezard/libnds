@@ -9,6 +9,7 @@ static u16 piano_keys_old = 0;
 //------------------------------------------------------------------------------
 bool pianoIsInserted() {
 //------------------------------------------------------------------------------
+	if (isTWLmode()) return false;
 
 	sysSetCartOwner(BUS_OWNER_ARM9);
 

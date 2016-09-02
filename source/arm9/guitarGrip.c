@@ -15,6 +15,7 @@ static void guitarGripSetBus() {
 //------------------------------------------------------------------------------
 bool guitarGripIsInserted() {
 //------------------------------------------------------------------------------
+	if(isTWLmode()) return false;
 
 	guitarGripSetBus();
 
