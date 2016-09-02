@@ -29,6 +29,7 @@
 #include <nds/fifomessages.h>
 #include <nds/interrupts.h>
 #include <nds/bios.h>
+#include <nds/card.h>
 #include <nds/arm7/clock.h>
 #include <nds/arm7/sdmmc.h>
 #include <nds/arm7/i2c.h>
@@ -112,6 +113,46 @@ void powerValueHandler(u32 value, void* user_data) {
 }
 
 //---------------------------------------------------------------------------------
+void sdmmcDsiValueHandler(u32 value, void* user_data) {
+//---------------------------------------------------------------------------------
+    int result = 0;
+
+    int oldIME = enterCriticalSection();
+
+    switch(value) {
+
+    case SDMMC_HAVE_SD:
+        result = sdmmc_read16(REG_SDSTATUS0);
+        break;
+
+    case SDMMC_SD_START:
+        if (sdmmc_read16(REG_SDSTATUS0) == 0) {
+            result = 1;
+        } else {
+            sdmmc_controller_init();
+            sdmmc_nand_init();
+            result = sdmmc_sdcard_init();
+        }
+        break;
+
+    case SDMMC_SD_IS_INSERTED:
+        result = sdmmc_cardinserted();
+        break;
+
+    case SDMMC_SD_STOP:
+        break;
+		
+	case DSI_RESET_SLOT_1:
+		result = dsi_resetSlot1();
+        break;
+    }
+
+    leaveCriticalSection(oldIME);
+
+    fifoSendValue32(FIFO_SDMMCDSI, result);
+}
+
+//---------------------------------------------------------------------------------
 void systemSleep(void) {
 //---------------------------------------------------------------------------------
 	if(!sleepIsEnabled) return;
@@ -125,6 +166,38 @@ int sleepEnabled(void) {
 	return sleepIsEnabled;
 }
 
+//---------------------------------------------------------------------------------
+int dsi_resetSlot1() {
+//---------------------------------------------------------------------------------
+	int backup=REG_SCFG_EXT;
+	REG_SCFG_EXT=0x82050100;
+
+	// Power Off Slot
+	while((REG_SCFG_MC&0x0C) !=  0x0C); // wait until state<>3
+	if((REG_SCFG_MC&0x0C) != 0x08) return 1; // exit if state<>2      
+	
+	REG_SCFG_MC = 0x0C; // set state=3 
+	while((REG_SCFG_MC&0x0C) !=  0x00); // wait until state=0
+
+	// Power On Slot
+	while((REG_SCFG_MC&0x0C) !=  0x0C); // wait until state<>3
+	if((REG_SCFG_MC&0x0C) != 0x00) return 1; //  exit if state<>0
+	
+	REG_SCFG_MC = 0x04; // set state=1
+	while((REG_SCFG_MC&0x0C) != 0x04); // wait until state=1
+	
+	REG_SCFG_MC = 0x08; // set state=2      
+	while((REG_SCFG_MC&0x0C) != 0x08); // wait until state=2
+	
+	REG_ROMCTRL = 0x20000000; // set ROMCTRL=20000000h
+	
+	while((REG_ROMCTRL&0x8000000) != 0x8000000); // wait until ROMCTRL.bit31=1
+
+	REG_SCFG_EXT=backup;
+	
+	return 0;
+}
+
 void sdmmcMsgHandler(int bytes, void *user_data);
 void sdmmcValueHandler(u32 value, void* user_data);
 void firmwareMsgHandler(int bytes, void *user_data);
@@ -134,8 +207,8 @@ void installSystemFIFO(void) {
 //---------------------------------------------------------------------------------
 
 	fifoSetValue32Handler(FIFO_PM, powerValueHandler, 0);
-	fifoSetValue32Handler(FIFO_SDMMC, sdmmcValueHandler, 0);
-	fifoSetDatamsgHandler(FIFO_SDMMC, sdmmcMsgHandler, 0);
+	fifoSetValue32Handler(FIFO_SDMMCDSI, sdmmcDsiValueHandler, 0);
+	fifoSetDatamsgHandler(FIFO_SDMMCDSI, sdmmcMsgHandler, 0);
 	fifoSetDatamsgHandler(FIFO_FIRMWARE, firmwareMsgHandler, 0);
 	
 }

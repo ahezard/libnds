@@ -68,8 +68,6 @@ typedef enum
 */
 #define	REG_POWERCNT	(*(vu16*)0x4000304)
 
-#define	REG_ROMCTRL		(*(vu32*)0x40001A4)
-
 /* DSI mode registers */
 #define REG_SCFG_ROM	(*(vu32*)0x4004000)
 #define REG_SCFG_CLK	(*(vu32*)0x4004004)
@@ -78,12 +76,12 @@ typedef enum
 
 static inline
 bool isTWLmode() {
-	return REG_SCFG_ROM&0x03 != 0x03 and REG_SCFG_ROM != 0x00;
+	return ((REG_SCFG_ROM&0x03) != 0x03) && (REG_SCFG_ROM != 0x00);
 }
 
 static inline
 bool isSDAcessible() {
-	return  REG_SCFG_EXT&0x1000000 == 0x1000000;
+	return  (REG_SCFG_EXT&0x1000000) == 0x1000000;
 }
 
 static inline
@@ -279,6 +277,7 @@ void powerOff(PM_Bits bits) {
 
 void readUserSettings();
 void systemShutDown();
+int dsi_resetSlot1();
 
 #endif /* ARM7 */
 

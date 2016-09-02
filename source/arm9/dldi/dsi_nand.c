@@ -33,11 +33,11 @@ bool nand_ReadSectors(sec_t sector, sec_t numSectors,void* buffer) {
 	msg.sdParams.numsectors = numSectors;
 	msg.sdParams.buffer = buffer;
 
-	fifoSendDatamsg(FIFO_SDMMC, sizeof(msg), (u8*)&msg);
+	fifoSendDatamsg(FIFO_SDMMCDSI, sizeof(msg), (u8*)&msg);
 
-	fifoWaitValue32(FIFO_SDMMC);
+	fifoWaitValue32(FIFO_SDMMCDSI);
 
-	int result = fifoGetValue32(FIFO_SDMMC);
+	int result = fifoGetValue32(FIFO_SDMMCDSI);
 
 	return result == 0;
 }
@@ -55,11 +55,11 @@ bool nand_WriteSectors(sec_t sector, sec_t numSectors,const void* buffer) {
 	msg.sdParams.numsectors = numSectors;
 	msg.sdParams.buffer = (void*)buffer;
 
-	fifoSendDatamsg(FIFO_SDMMC, sizeof(msg), (u8*)&msg);
+	fifoSendDatamsg(FIFO_SDMMCDSI, sizeof(msg), (u8*)&msg);
 
-	fifoWaitValue32(FIFO_SDMMC);
+	fifoWaitValue32(FIFO_SDMMCDSI);
 
-	int result = fifoGetValue32(FIFO_SDMMC);
+	int result = fifoGetValue32(FIFO_SDMMCDSI);
 
 	return result == 0;
 }

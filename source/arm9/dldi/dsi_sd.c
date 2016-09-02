@@ -9,17 +9,17 @@ bool sdio_Startup() {
 //---------------------------------------------------------------------------------
 	if (!isSDAcessible()) return false;
 
-	fifoSendValue32(FIFO_SDMMC,SDMMC_HAVE_SD);
-	while(!fifoCheckValue32(FIFO_SDMMC));
-	int result = fifoGetValue32(FIFO_SDMMC);
+	fifoSendValue32(FIFO_SDMMCDSI,SDMMC_HAVE_SD);
+	while(!fifoCheckValue32(FIFO_SDMMCDSI));
+	int result = fifoGetValue32(FIFO_SDMMCDSI);
 
 	if(result==0) return false;
 
-	fifoSendValue32(FIFO_SDMMC,SDMMC_SD_START);
+	fifoSendValue32(FIFO_SDMMCDSI,SDMMC_SD_START);
 
-	fifoWaitValue32(FIFO_SDMMC);
+	fifoWaitValue32(FIFO_SDMMCDSI);
 
-	result = fifoGetValue32(FIFO_SDMMC);
+	result = fifoGetValue32(FIFO_SDMMCDSI);
 	
 	return result == 0;
 }
@@ -29,11 +29,11 @@ bool sdio_IsInserted() {
 //---------------------------------------------------------------------------------
 	if (!isSDAcessible()) return false;
 
-	fifoSendValue32(FIFO_SDMMC,SDMMC_SD_IS_INSERTED);
+	fifoSendValue32(FIFO_SDMMCDSI,SDMMC_SD_IS_INSERTED);
 
-	fifoWaitValue32(FIFO_SDMMC);
+	fifoWaitValue32(FIFO_SDMMCDSI);
 
-	int result = fifoGetValue32(FIFO_SDMMC);
+	int result = fifoGetValue32(FIFO_SDMMCDSI);
 
 	return result == 1;
 }
@@ -51,11 +51,11 @@ bool sdio_ReadSectors(sec_t sector, sec_t numSectors,void* buffer) {
 	msg.sdParams.numsectors = numSectors;
 	msg.sdParams.buffer = buffer;
 	
-	fifoSendDatamsg(FIFO_SDMMC, sizeof(msg), (u8*)&msg);
+	fifoSendDatamsg(FIFO_SDMMCDSI, sizeof(msg), (u8*)&msg);
 
-	fifoWaitValue32(FIFO_SDMMC);
+	fifoWaitValue32(FIFO_SDMMCDSI);
 
-	int result = fifoGetValue32(FIFO_SDMMC);
+	int result = fifoGetValue32(FIFO_SDMMCDSI);
 	
 	return result == 0;
 }
@@ -73,11 +73,11 @@ bool sdio_WriteSectors(sec_t sector, sec_t numSectors,const void* buffer) {
 	msg.sdParams.numsectors = numSectors;
 	msg.sdParams.buffer = (void*)buffer;
 	
-	fifoSendDatamsg(FIFO_SDMMC, sizeof(msg), (u8*)&msg);
+	fifoSendDatamsg(FIFO_SDMMCDSI, sizeof(msg), (u8*)&msg);
 
-	fifoWaitValue32(FIFO_SDMMC);
+	fifoWaitValue32(FIFO_SDMMCDSI);
 
-	int result = fifoGetValue32(FIFO_SDMMC);
+	int result = fifoGetValue32(FIFO_SDMMCDSI);
 	
 	return result == 0;
 }

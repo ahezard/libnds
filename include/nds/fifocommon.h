@@ -15,7 +15,7 @@ typedef enum {
 	FIFO_SYSTEM		= 2,	/*!< \brief fifo channel reserved for system functions. */
 	FIFO_MAXMOD		= 3,	/*!< \brief fifo channel reserved for the maxmod library. */
 	FIFO_DSWIFI		= 4,	/*!< \brief fifo channel reserved for the dswifi library. */
-	FIFO_SDMMC		= 5,	/*!< \brief fifo channel reserved for dsi sdmmc control. */
+	FIFO_SDMMCDSI	= 5,	/*!< \brief fifo channel reserved for dsi sdmmc control and dsi specific functions. */
 	FIFO_FIRMWARE	= 6,	/*!< \brief fifo channel reserved for firmware access. */
 	FIFO_RSVD_01	= 7,	/*!< \brief fifo channel reserved for future use. */
 	FIFO_USER_01	= 8,	/*!< \brief fifo channel available for users. */
@@ -61,8 +61,9 @@ typedef enum {
 	SDMMC_SD_IS_INSERTED,
 	SDMMC_SD_STOP,
 	SDMMC_NAND_START,
-	SDMMC_NAND_STOP
-} FifoSdmmcCommands;
+	SDMMC_NAND_STOP,
+	DSI_RESET_SLOT_1
+} FifoSdmmcDsiCommands;
 
 typedef enum {
 	FW_READ,
