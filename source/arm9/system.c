@@ -128,3 +128,26 @@ u32 dsi_resetSlot1() {
 	return fifoGetValue32(FIFO_SDMMCDSI);
 }
 
+u32 dsi_lockScfgARM7() {
+	// send a command to ARM7 to lock SCFG (ARM9 SCFG lock needs to be done first)
+	fifoSendValue32(FIFO_SDMMCDSI, DSI_LOCK_SCFG_ARM7);
+	while(!fifoCheckValue32(FIFO_SDMMCDSI)); //swiIntrWait(1,IRQ_FIFO_NOT_EMPTY);
+	return fifoGetValue32(FIFO_SDMMCDSI);
+}
+
+u32 dsi_lockScfgARM9() {
+	// REG_SCFG_EXT.bit31=0 lock SCFG if bit31 is set to 1 on ARM7 (ARM9 SCFG lock needs to be done first)
+	REG_SCFG_EXT &= ~0x80000000;
+	return 0;
+}
+
+u32 dsi_switchToDsMode() {
+	// switch ARM9 to NTR (ds) mode
+	REG_SCFG_EXT = 0x12A00000;
+
+	// send a command to ARM7 to switch to NTR (ds) mode
+	fifoSendValue32(FIFO_SDMMCDSI, DSI_SWITCH_TO_DS_MODE);
+	while(!fifoCheckValue32(FIFO_SDMMCDSI)); //swiIntrWait(1,IRQ_FIFO_NOT_EMPTY);
+	return fifoGetValue32(FIFO_SDMMCDSI);
+}
+

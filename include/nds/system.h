@@ -131,6 +131,8 @@ void ledBlink(int bm);
 	\note special dsi command that needs unlocked ARM7 SCFG
 */
 u32 dsi_resetSlot1();
+u32 dsi_lockScfgARM7();
+u32 dsi_switchToDsMode();
 
 extern bool __dsimode;
 
@@ -138,6 +140,8 @@ extern bool __dsimode;
 //    ARM9 section
 //--------------------------------------------------------------
 #ifdef ARM9
+
+u32 dsi_lockScfgARM9();
 
 //!	Turns on specified hardware.
 /*!	May be called from arm7 or arm9 (arm9 power bits will be ignored by arm7, arm7 power bits

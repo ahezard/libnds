@@ -145,6 +145,14 @@ void sdmmcDsiValueHandler(u32 value, void* user_data) {
 	case DSI_RESET_SLOT_1:
 		result = dsi_resetSlot1();
         break;
+
+	case DSI_LOCK_SCFG_ARM7:
+		result = dsi_lockScfgARM7();
+        break;
+
+	case DSI_SWITCH_TO_DS_MODE:
+		result = dsi_switchToDsMode();
+        break;
     }
 
     leaveCriticalSection(oldIME);
@@ -170,7 +178,7 @@ int sleepEnabled(void) {
 u32 dsi_resetSlot1() {
 //---------------------------------------------------------------------------------
 	int backup=REG_SCFG_EXT;
-	REG_SCFG_EXT=0x82050100;
+	REG_SCFG_EXT = 0x82050100;
 
 	// Power Off Slot
 	while((REG_SCFG_MC&0x0C) !=  0x0C); // wait until state<>3
@@ -194,6 +202,29 @@ u32 dsi_resetSlot1() {
 	while((REG_ROMCTRL&0x8000000) != 0x8000000); // wait until ROMCTRL.bit31=1
 
 	REG_SCFG_EXT=backup;
+	
+	return 0;
+}
+
+u32 dsi_lockScfgARM7() {
+	// REG_SCFG_EXT.bit31=0 lock SCFG
+	REG_SCFG_EXT &= ~0x80000000;	
+	return 0;
+}
+
+u32 dsi_switchToDsMode() {
+	// REG_SCFG_ROM (ARM7)
+	// 0x703 : NTR (DS)
+	// 0x701 : TWL (DSI)
+	REG_SCFG_ROM = 0x703;
+
+	// REG_SCFG_CLK (ARM7)
+	// 0x0180 : NTR (DS)
+	// 0x0187 : TWL (DSI)
+	REG_SCFG_CLK = 0x0180;
+	
+	// REG_SCFG_EXT (ARM7)
+	REG_SCFG_EXT = 0x12A00000;
 	
 	return 0;
 }
