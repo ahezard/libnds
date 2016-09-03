@@ -130,8 +130,17 @@ void sdmmcDsiValueHandler(u32 value, void* user_data) {
             result = 1;
         } else {
             sdmmc_controller_init();
-            sdmmc_nand_init();
             result = sdmmc_sdcard_init();
+        }
+        break;
+		
+	case SDMMC_NAND_START:
+		// disable nand start by default until no$gba handle it correctly
+        if (sdmmc_read16(REG_SDSTATUS0) == 0) {
+            result = 1;
+        } else {
+            sdmmc_controller_init();
+            result = sdmmc_nand_init();
         }
         break;
 

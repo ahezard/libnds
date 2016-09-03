@@ -8,8 +8,14 @@
 bool nand_Startup() {
 //---------------------------------------------------------------------------------
 	if (!isSDAcessible()) return false;
+	
+	fifoSendValue32(FIFO_SDMMCDSI,SDMMC_NAND_START);
 
-	return true;
+	fifoWaitValue32(FIFO_SDMMCDSI);
+
+	int result = fifoGetValue32(FIFO_SDMMCDSI);	
+
+	return result == 0;
 }
 
 //---------------------------------------------------------------------------------
