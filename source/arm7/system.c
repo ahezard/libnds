@@ -190,32 +190,29 @@ int sleepEnabled(void) {
 
 //---------------------------------------------------------------------------------
 u32 dsi_resetSlot1() {
-//---------------------------------------------------------------------------------
-	int backup=REG_SCFG_EXT;
-	REG_SCFG_EXT = 0x82050100;
-
+//---------------------------------------------------------------------------------	
 	// Power Off Slot
-	while((REG_SCFG_MC&0x0C) !=  0x0C); // wait until state<>3
-	if((REG_SCFG_MC&0x0C) != 0x08) return 1; // exit if state<>2      
+	while(REG_SCFG_MC&0x0C !=  0x0C); // wait until state<>3
+	if(REG_SCFG_MC&0x0C != 0x08) return 1; // exit if state<>2      
 	
 	REG_SCFG_MC = 0x0C; // set state=3 
-	while((REG_SCFG_MC&0x0C) !=  0x00); // wait until state=0
+	while(REG_SCFG_MC&0x0C !=  0x00); // wait until state=0
+
+	swiWaitForVBlank();
 
 	// Power On Slot
-	while((REG_SCFG_MC&0x0C) !=  0x0C); // wait until state<>3
-	if((REG_SCFG_MC&0x0C) != 0x00) return 1; //  exit if state<>0
+	while(REG_SCFG_MC&0x0C !=  0x0C); // wait until state<>3
+	if(REG_SCFG_MC&0x0C != 0x00) return 1; //  exit if state<>0
 	
 	REG_SCFG_MC = 0x04; // set state=1
-	while((REG_SCFG_MC&0x0C) != 0x04); // wait until state=1
+	while(REG_SCFG_MC&0x0C != 0x04); // wait until state=1
 	
 	REG_SCFG_MC = 0x08; // set state=2      
-	while((REG_SCFG_MC&0x0C) != 0x08); // wait until state=2
+	while(REG_SCFG_MC&0x0C != 0x08); // wait until state=2
 	
 	REG_ROMCTRL = 0x20000000; // set ROMCTRL=20000000h
 	
-	while((REG_ROMCTRL&0x8000000) != 0x8000000); // wait until ROMCTRL.bit31=1
-
-	REG_SCFG_EXT=backup;
+	while(REG_ROMCTRL&0x8000000 != 0x8000000); // wait until ROMCTRL.bit31=1
 	
 	return 0;
 }
