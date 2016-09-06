@@ -151,3 +151,9 @@ u32 dsi_switchToDsMode() {
 	return fifoGetValue32(FIFO_SDMMCDSI);
 }
 
+u32 dsi_forceTouchDsmode() {
+	// send a command to ARM7 to force the use of DS (not DSI) touchscreen protocol
+	fifoSendValue32(FIFO_PM, PM_DSI_TOUCHDSMODE);
+}
+
+

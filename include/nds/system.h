@@ -133,8 +133,10 @@ void ledBlink(int bm);
 u32 dsi_resetSlot1();
 u32 dsi_lockScfgARM7();
 u32 dsi_switchToDsMode();
+u32 dsi_forceTouchDsmode();
 
 extern bool __dsimode;
+extern bool __touch_dsimode;
 
 //--------------------------------------------------------------
 //    ARM9 section

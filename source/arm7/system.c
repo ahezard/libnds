@@ -36,6 +36,7 @@
 
 bool sleepIsEnabled = true;
 
+bool __dsimode = false;
 
 //---------------------------------------------------------------------------------
 void powerValueHandler(u32 value, void* user_data) {
@@ -108,6 +109,10 @@ void powerValueHandler(u32 value, void* user_data) {
 		break;
 	case PM_DSI_HACK:
 		__dsimode = true;
+		__touch_dsimode = true;
+		break;
+	case PM_DSI_TOUCHDSMODE:
+		__touch_dsimode = false;
 		break;
 	}
 }

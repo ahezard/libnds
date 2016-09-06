@@ -41,7 +41,7 @@ static u8 range_counter_2 = 0;
 static u8 range = 20;
 static u8 min_range = 20;
 
-bool __dsimode = false;
+bool __touch_dsimode = false;
 
 //---------------------------------------------------------------------------------
 u32 readTSCReg(u32 reg) {
@@ -409,7 +409,7 @@ void touchReadDSMode(touchPosition *touchPos) {
 bool touchPenDown() {
 //---------------------------------------------------------------------------------
 	bool down;
-	if (__dsimode) {
+	if (__touch_dsimode) {
 
 		int oldIME = enterCriticalSection();
 		writeTSCReg(0,3);
@@ -467,7 +467,7 @@ void touchReadXY(touchPosition *touchPos) {
 		touchInit = true;
 	}
 
-	if (__dsimode) {
+	if (__touch_dsimode) {
 		touchReadDSiMode(touchPos);
 	} else {
 		touchReadDSMode(touchPos);
