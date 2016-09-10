@@ -62,9 +62,6 @@ typedef enum {
 	SDMMC_SD_STOP,
 	SDMMC_NAND_START,
 	SDMMC_NAND_STOP,
-	DSI_RESET_SLOT_1,
-	DSI_LOCK_SCFG_ARM7,	
-	DSI_SWITCH_TO_DS_MODE
 } FifoSdmmcDsiCommands;
 
 typedef enum {
@@ -81,8 +78,13 @@ typedef enum {
 	PM_REQ_SLEEP_DISABLE	= (5<<16),
 	PM_REQ_SLEEP_ENABLE		= (6<<16),
 	PM_REQ_BATTERY			= (7<<16),
-	PM_DSI_HACK				= (8<<16),
-	PM_DSI_TOUCHDSMODE		= (9<<16)
+	DSI_HACK				= (8<<16),
+	DSI_TOUCHDSMODE			= (9<<16),	
+	DSI_RESET_SLOT_1		= (10<<16),	
+	DSI_POWEROFF_SLOT_1		= (11<<16),	
+	DSI_POWERON_SLOT_1		= (12<<16),	
+	DSI_LOCK_SCFG_ARM7		= (13<<16),	
+	DSI_SWITCH_TO_DS_MODE	= (14<<16),	
 }FifoPMCommands;
 
 //! Enum values for the fifo wifi commands.

@@ -131,6 +131,8 @@ void ledBlink(int bm);
 	\note special dsi command that needs unlocked ARM7 SCFG
 */
 u32 dsi_resetSlot1();
+u32 dsi_powerOffSlot1();
+u32 dsi_powerOnSlot1();
 u32 dsi_lockScfgARM7();
 u32 dsi_switchToDsMode();
 u32 dsi_forceTouchDsmode();

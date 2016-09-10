@@ -123,16 +123,30 @@ u32 getBatteryLevel() {
 
 u32 dsi_resetSlot1() {
 	// send a command to ARM7 to reset the slot1
-	fifoSendValue32(FIFO_SDMMCDSI, DSI_RESET_SLOT_1);
-	while(!fifoCheckValue32(FIFO_SDMMCDSI)); //swiIntrWait(1,IRQ_FIFO_NOT_EMPTY);
-	return fifoGetValue32(FIFO_SDMMCDSI);
+	fifoSendValue32(FIFO_PM, DSI_RESET_SLOT_1);
+	while(!fifoCheckValue32(FIFO_PM)); //swiIntrWait(1,IRQ_FIFO_NOT_EMPTY);
+	return fifoGetValue32(FIFO_PM);
+}
+
+u32 dsi_powerOffSlot1(){
+	// send a command to ARM7 to reset the slot1
+	fifoSendValue32(FIFO_PM, DSI_POWEROFF_SLOT_1);
+	while(!fifoCheckValue32(FIFO_PM)); //swiIntrWait(1,IRQ_FIFO_NOT_EMPTY);
+	return fifoGetValue32(FIFO_PM);
+}
+
+u32 dsi_powerOnSlot1(){
+	// send a command to ARM7 to reset the slot1
+	fifoSendValue32(FIFO_PM, DSI_POWERON_SLOT_1);
+	while(!fifoCheckValue32(FIFO_PM)); //swiIntrWait(1,IRQ_FIFO_NOT_EMPTY);
+	return fifoGetValue32(FIFO_PM);
 }
 
 u32 dsi_lockScfgARM7() {
 	// send a command to ARM7 to lock SCFG (ARM9 SCFG lock needs to be done first)
-	fifoSendValue32(FIFO_SDMMCDSI, DSI_LOCK_SCFG_ARM7);
-	while(!fifoCheckValue32(FIFO_SDMMCDSI)); //swiIntrWait(1,IRQ_FIFO_NOT_EMPTY);
-	return fifoGetValue32(FIFO_SDMMCDSI);
+	fifoSendValue32(FIFO_PM, DSI_LOCK_SCFG_ARM7);
+	while(!fifoCheckValue32(FIFO_PM)); //swiIntrWait(1,IRQ_FIFO_NOT_EMPTY);
+	return fifoGetValue32(FIFO_PM);
 }
 
 u32 dsi_lockScfgARM9() {
@@ -153,7 +167,7 @@ u32 dsi_switchToDsMode() {
 
 u32 dsi_forceTouchDsmode() {
 	// send a command to ARM7 to force the use of DS (not DSI) touchscreen protocol
-	fifoSendValue32(FIFO_PM, PM_DSI_TOUCHDSMODE);
+	fifoSendValue32(FIFO_PM, DSI_TOUCHDSMODE);
 }
 
 

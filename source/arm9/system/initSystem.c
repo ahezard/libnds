@@ -86,7 +86,7 @@ void __attribute__((weak)) initSystem(void) {
 	fifoSetDatamsgHandler(FIFO_SYSTEM, systemMsgHandler, 0);
 
 	if(isTWLmode()) {
-		fifoSendValue32(FIFO_PM,PM_DSI_HACK);
+		fifoSendValue32(FIFO_PM,DSI_HACK);
 		__dsimode = true;
 	}
 	__transferRegion()->buttons = 0xffff;

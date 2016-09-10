@@ -44,6 +44,8 @@ void powerValueHandler(u32 value, void* user_data) {
 	u32 temp;
 	u32 ie_save;
 	int battery, backlight, power;
+	int result = 0;
+
 
 	switch(value & 0xFFFF0000) {
 		//power control
@@ -107,13 +109,40 @@ void powerValueHandler(u32 value, void* user_data) {
 		}
 		fifoSendValue32(FIFO_PM, battery);
 		break;
-	case PM_DSI_HACK:
+		
+	case DSI_HACK:
 		__dsimode = true;
 		__touch_dsimode = true;
 		break;
-	case PM_DSI_TOUCHDSMODE:
+		
+	case DSI_TOUCHDSMODE:
 		__touch_dsimode = false;
 		break;
+		
+	case DSI_RESET_SLOT_1:
+		result = dsi_resetSlot1();		
+		fifoSendValue32(FIFO_PM, result);
+        break;
+		
+	case DSI_POWEROFF_SLOT_1:
+		result = dsi_powerOffSlot1();		
+		fifoSendValue32(FIFO_PM, result);
+        break;
+	
+	case DSI_POWERON_SLOT_1:
+		result = dsi_powerOnSlot1();
+		fifoSendValue32(FIFO_PM, result);
+        break;
+		
+	case DSI_LOCK_SCFG_ARM7:
+		result = dsi_lockScfgARM7();
+		fifoSendValue32(FIFO_PM, result);
+        break;
+
+	case DSI_SWITCH_TO_DS_MODE:
+		result = dsi_switchToDsMode();
+		fifoSendValue32(FIFO_PM, result);
+        break;
 	}
 }
 
@@ -155,20 +184,7 @@ void sdmmcDsiValueHandler(u32 value, void* user_data) {
 
     case SDMMC_SD_STOP:
         break;
-		
-	case DSI_RESET_SLOT_1:
-		result = dsi_resetSlot1();
-        break;
-
-	case DSI_LOCK_SCFG_ARM7:
-		result = dsi_lockScfgARM7();
-        break;
-
-	case DSI_SWITCH_TO_DS_MODE:
-		result = dsi_switchToDsMode();
-        break;
-    }
-
+	}
     leaveCriticalSection(oldIME);
 
     fifoSendValue32(FIFO_SDMMCDSI, result);
@@ -191,15 +207,21 @@ int sleepEnabled(void) {
 //---------------------------------------------------------------------------------
 u32 dsi_resetSlot1() {
 //---------------------------------------------------------------------------------	
+	dsi_powerOffSlot1();
+	for (int i = 0; i < 30; i++) { swiWaitForVBlank(); }
+	dsi_powerOnSlot1();	
+}
+
+u32 dsi_powerOffSlot1() {
 	// Power Off Slot
 	while(REG_SCFG_MC&0x0C !=  0x0C); // wait until state<>3
 	if(REG_SCFG_MC&0x0C != 0x08) return 1; // exit if state<>2      
 	
 	REG_SCFG_MC = 0x0C; // set state=3 
 	while(REG_SCFG_MC&0x0C !=  0x00); // wait until state=0
+}
 
-	swiWaitForVBlank();
-
+u32 dsi_powerOnSlot1() {
 	// Power On Slot
 	while(REG_SCFG_MC&0x0C !=  0x0C); // wait until state<>3
 	if(REG_SCFG_MC&0x0C != 0x00) return 1; //  exit if state<>0
