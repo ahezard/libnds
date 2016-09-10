@@ -160,9 +160,9 @@ u32 dsi_switchToDsMode() {
 	REG_SCFG_EXT = 0x12A00000;
 
 	// send a command to ARM7 to switch to NTR (ds) mode
-	fifoSendValue32(FIFO_SDMMCDSI, DSI_SWITCH_TO_DS_MODE);
-	while(!fifoCheckValue32(FIFO_SDMMCDSI)); //swiIntrWait(1,IRQ_FIFO_NOT_EMPTY);
-	return fifoGetValue32(FIFO_SDMMCDSI);
+	fifoSendValue32(FIFO_PM, DSI_SWITCH_TO_DS_MODE);
+	while(!fifoCheckValue32(FIFO_PM)); //swiIntrWait(1,IRQ_FIFO_NOT_EMPTY);
+	return fifoGetValue32(FIFO_PM);
 }
 
 u32 dsi_forceTouchDsmode() {
