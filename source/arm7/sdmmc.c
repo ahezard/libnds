@@ -10,11 +10,11 @@
 static struct mmcdevice deviceSD;
 static struct mmcdevice deviceNAND;
 
-/*mmcdevice *getMMCDevice(int drive) {
+mmcdevice *getMMCDevice(int drive) {
     if(drive==0) return &deviceNAND;
     return &deviceSD;
 }
-*/
+
 //---------------------------------------------------------------------------------
 int geterror(struct mmcdevice *ctx) {
 //---------------------------------------------------------------------------------

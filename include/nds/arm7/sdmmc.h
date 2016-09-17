@@ -121,6 +121,8 @@ typedef struct mmcdevice {
     u32 res;
 } mmcdevice;
 
+mmcdevice *getMMCDevice(int drive);
+
 void sdmmc_controller_init();
 void sdmmc_initirq();
 int sdmmc_cardinserted();
