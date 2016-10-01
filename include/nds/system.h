@@ -74,6 +74,16 @@ typedef enum
 #define REG_SCFG_EXT	(*(vu32*)0x4004008)
 #define REG_SCFG_MC		(*(vu32*)0x4004010)
 
+#define REG_MBK_1	(*(vu32*)0x4004040)
+#define REG_MBK_2	(*(vu32*)0x4004044)
+#define REG_MBK_3	(*(vu32*)0x4004048)
+#define REG_MBK_4	(*(vu32*)0x400404C)
+#define REG_MBK_5	(*(vu32*)0x4004050)
+#define REG_MBK_6	(*(vu32*)0x4004054)
+#define REG_MBK_7	(*(vu32*)0x4004058)
+#define REG_MBK_8	(*(vu32*)0x400405C)
+#define REG_MBK_9	(*(vu32*)0x4004060)
+
 static inline
 bool isTWLmode() {
 	return ((REG_SCFG_ROM&0x03) != 0x03) && (REG_SCFG_ROM != 0x00);
