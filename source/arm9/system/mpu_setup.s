@@ -114,38 +114,22 @@ __libnds_mpu_setup:
 
 	orr	r0,r0,#(PAGE_32K | 1)
 	mcr	p15, 0, r0, c6, c4, 0
-
+	
+	@force 4MB RAM mode
 	ldr	r0,=0x4004008
-	ldr	r0,[r0]
-	ands	r0,r0,#0x8000
-	bne	dsi_mode
+	ldr	r1,=0xFFFF3FFF
+	ldr	r2,[r0]
+	and r2,r2,r1
+	str r2,[r0]
 
-	swi	0xf0000
+	@swi	0xf0000
 
-	ldr	r1,=( PAGE_128M | 0x08000000 | 1)
-	cmp	r0,#0
-	bne	debug_mode
-
+	ldr	r1,=( PAGE_128M | 0x08000000 | 1) 
 	ldr	r3,=( PAGE_4M | 0x02000000 | 1)
 	ldr	r2,=( PAGE_16M | 0x02000000 | 1)
 	mov	r8,#0x02400000
 
 	adr	r9,dsmasks
-	b	setregions
-
-debug_mode:
-	ldr	r3,=( PAGE_8M | 0x02000000 | 1)
-	ldr	r2,=( PAGE_8M | 0x02800000 | 1)
-	mov	r8,#0x02800000
-	adr	r9,debugmasks
-	b	setregions
-
-dsi_mode:
-	ldr	r1,=( PAGE_8M  | 0x03000000 | 1)
-	ldr	r3,=( PAGE_16M | 0x02000000 | 1)
-	ldr	r2,=( PAGE_16M | 0x0C000000 | 1)
-	mov	r8,#0x03000000
-	adr	r9,dsimasks
 
 setregions:
 
