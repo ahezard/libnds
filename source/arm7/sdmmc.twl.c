@@ -461,7 +461,7 @@ void sdmmcValueHandler(u32 value, void* user_data) {
             result = 1;
         } else {
             sdmmc_controller_init();
-            sdmmc_nand_init();
+            //sdmmc_nand_init();
             result = sdmmc_sdcard_init();
         }
         break;
