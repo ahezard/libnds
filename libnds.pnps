@@ -1,1 +1,1 @@
-<pd><ViewState><e p="libnds" x="true"></e><e p="libnds\arm7" x="false"></e><e p="libnds\arm9" x="false"></e><e p="libnds\source" x="false"></e><e p="libnds\include" x="false"></e></ViewState></pd>
+<pd><ViewState><e p="libnds" x="true"></e><e p="libnds\arm7" x="false"></e><e p="libnds\arm9" x="false"></e><e p="libnds\source" x="true"></e><e p="libnds\source\arm7" x="true"></e><e p="libnds\source\arm9" x="false"></e><e p="libnds\source\common" x="false"></e><e p="libnds\include" x="false"></e></ViewState></pd>
