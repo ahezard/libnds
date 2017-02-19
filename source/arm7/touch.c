@@ -31,6 +31,7 @@
 #include <nds/arm7/touch.h>
 #include <nds/arm7/input.h>
 #include <nds/interrupts.h>
+#include <nds/memory.h>
 
 #include <stdlib.h>
 
@@ -43,6 +44,11 @@ static u8 min_range = 20;
 
 bool isTouchscreenTWLmode () {
 	return false;
+	if (isDSiMode()) {
+		return (__DSiHeader->offset_0x1BC[2] & 0x80)!=0; // test bit 24 of 0x1BC header
+	} else {
+		return false;
+	}
 }
 
 //---------------------------------------------------------------------------------
